@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}<title>Financepeer App | User Home</title>{% endblock title %}
+{% block heading %}<a class="navbar-brand" href="{% url 'userhome' %}">Financepeer App</a>{% endblock heading %}
+{% block content %}
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+</style>
+<body>
+
+{% if not all_users_data %}
+
+<h2>Upload File</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="user_json_file" onchange="uploadFile(this)">
+    <button type="submit"> Upload</button>
+
+</form>
+
+{% endif %}
+
+{% if all_users_data %}
+<br>
+<div class="table-responsive">
+    <h2>Users Data Table</h2>
+
+    <table>
+
+        <tr>
+            <th>User Id</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Body</th>
+        </tr>
+        {% for each in all_users_data %}
+        <tr>
+            <td>{{ each.userid }}</td>
+            <td>{{ each.uid }}</td>
+            <td>{{ each.title }}</td>
+            <td>{{ each.body }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if all_users_data.has_other_pages %}
+    <ul class="pagination">
+        {% if all_users_data.has_previous %}
+        <li><a href="?page={{ all_users_data.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_users_data.paginator.page_range %}
+        {% if data.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if data.has_next %}
+        <li><a href="?page={{ all_users_data.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+</div>
+</body>
+{% endif %}
+
+{% endblock %}

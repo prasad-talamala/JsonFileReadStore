@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<strong style="color:red">Financepeer App</strong>...
+<br><br>
+<p> To get started, please <a href="{% url 'login' %}"> Log In </a></p>
+
+<p> If you dont have account, then <a href="{% url 'register' %}"> Sign up</a></p>
+<hr>
+{% endblock content %}
